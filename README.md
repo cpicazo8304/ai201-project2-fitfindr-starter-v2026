@@ -60,7 +60,7 @@
 `category`, `style_tags` (list), `size`, `condition`, `price` (float), `colors`
 (list), `brand` (`str` or `None`), `platform`. Ordered by keyword-overlap score
 descending, then by price ascending
-- **When it has nothing:** returns `[]`. Not `None`, not an exception.
+- **When it has nothing:** returns `[]`. Not `None`, not an exception. A branch would be needed in this situation. If search_listings returns an empty list, put a message in the session and stop.
 
 ### `suggest_outfit`
 
