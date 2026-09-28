@@ -176,6 +176,21 @@ def search_listings(
 
 
 # ── Tool 2: suggest_outfit ────────────────────────────────────────────────────
+_OUTFIT_SYSTEM = (
+    "You style thrifted clothing. Be concrete and brief. Name real garments, "
+    "never colours alone. No preamble, no sign-off, no markdown headings."
+)
+
+def _describe_item(item: dict) -> str:
+    """One line describing a listing, for a prompt."""
+    return (
+        f"{item.get('title')} — {item.get('category')}, "
+        f"size {item.get('size')}, {item.get('condition')} condition, "
+        f"colours: {', '.join(item.get('colors') or []) or 'unspecified'}, "
+        f"style: {', '.join(item.get('style_tags') or []) or 'unspecified'}, "
+        f"${item.get('price')} on {item.get('platform')}"
+    )
+
 
 def suggest_outfit(new_item: dict, wardrobe: dict) -> str:
     """
@@ -205,11 +220,44 @@ def suggest_outfit(new_item: dict, wardrobe: dict) -> str:
     Test it from a terminal before you move on:
         python -c "from tools import suggest_outfit; from utils.data_loader import get_example_wardrobe, load_listings; print(suggest_outfit(load_listings()[0], get_example_wardrobe()))"
     """
-    # TODO: replace this with your implementation
-    return ""
+    items = (wardrobe or {}).get('items', [])
+    item = _describe_item(new_item)
+
+    if not items:
+        prompt = "\n".join([
+            f"Someone wants to buy this item:",
+            f"{item}",
+            f"Since they don't have a set wardrobe, give general styling ideas for this item.",
+            f"Please give two outfit suggestions.",
+            f"Also, mention that these are more general ideas since they don't have a wardrobe."
+        ])
+    else:
+        owned = "\n".join([_describe_item(i) for i in items])
+        prompt = "\n".join([
+            f"Someone wants to buy this item:",
+            f"{item}",
+            f"They already own these items:",
+            f"{owned}",
+            f"Give specific outfit suggestions using only the items they already own.",
+            f"Don't use any outside information or introduce new items.",
+            f"Please give two outfit suggestions."
+        ])
+    return generate(prompt, system=_OUTFIT_SYSTEM)
 
 
 # ── Tool 3: create_fit_card ───────────────────────────────────────────────────
+
+_CARD_SYSTEM = (
+    "You write short captions for second-hand fashion finds, in the voice of "
+    "the person who found it. Two to four sentences. No hashtag walls, no "
+    "markdown, no headings."
+)
+
+NO_OUTFIT_MESSAGE = (
+    "No fit card — create_fit_card was called with no outfit suggestion, so "
+    "there was nothing to write about. Check that suggest_outfit returned "
+    "something before this step."
+)
 
 def create_fit_card(outfit: str, new_item: dict) -> str:
     """
@@ -245,5 +293,19 @@ def create_fit_card(outfit: str, new_item: dict) -> str:
     Test it from a terminal before you move on:
         python -c "from tools import create_fit_card; from utils.data_loader import load_listings; print(create_fit_card('jeans and white sneakers', load_listings()[0]))"
     """
-    # TODO: replace this with your implementation
-    return ""
+    if not (outfit or "").strip():
+        return NO_OUTFIT_MESSAGE
+
+    
+    prompt = "\n".join([
+        f"Here is the item that was found: {new_item}",
+        f"How they planned to wear it: {outfit}",
+        f"Write a short caption for this outfit suggestion that they can post.",
+        f"You have to mention the:",
+        f"-Price (written in digits, not spelled out in words): {new_item.get('price', 'N/A')}",
+        f"-Platform: {new_item.get('platform', 'N/A')}",
+        f"Don't just list them and write them naturally in sentences.",
+        f"It has to be like a post, not a product description."
+    ])
+    
+    return generate(prompt, system=_CARD_SYSTEM)
