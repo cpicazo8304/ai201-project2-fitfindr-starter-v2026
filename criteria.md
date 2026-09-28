@@ -25,9 +25,7 @@ Given a query that matches at least one listing, the agent completes all three
 tool calls and returns a fit card — in at least 4 of 5 tries.
 
 **Why this target:**
-<!-- Why 4 of 5 and not 5 of 5? Something about your search, probably —
-     "my search is a plain keyword match and some phrasings will miss" is a
-     real answer. -->
+If search_listings doesn't find nothing, then that will be covered in criterion 2. This criteria covers when search_listings finds items. So, the way this will fail is through the next two functions, which use generation calls. So, this criteria checks that calls finish and a fit card is returned, which can sometimes fail. Hence, it is 4 of 5.
 
 ---
 
@@ -37,65 +35,38 @@ Given a query that matches no listings, the agent stops before calling
 `suggest_outfit` and returns a message naming what to change — 5 of 5 tries.
 
 **Why this target:**
-<!-- Why is 5 of 5 reasonable here when criterion 1 isn't? What's different
-     about this path? -->
+Should be 5 of 5 because the branch is on an if on empty list returned in search_listings. Also, there is not randomness in search_listings. It gets a fixed list of items in a wardrobe and finds matches. If the query is impossible, it should return an empty list. If it is not 5 of 5, then something is wrong with search_listings or equivalent.
 
 ---
 
-## 3. Something about state
+## 3.  The item search found is the item the next tool received
 
-<!-- YOU WRITE THIS ONE.
-
-     How would you know that the item your search found is the same item the
-     next tool received? Name something countable or observable.
-
-     This is the criterion people find hardest, because state failure doesn't
-     look like state failure — it looks like a tool problem. Something that
-     compares session["selected_item"] against what actually reached
-     suggest_outfit is the shape you're after. -->
-
-
+For 5 of 5 tries, the id in session["selected_item"] equals the id of the first entry in session["search_results"], and the item title printed on the trace's suggest_outfit input line is that same item's title.
 
 **Why this target:**
 
-
+The first part shows that the session was built right (has to be 5 of 5). The second part helps show that the generation keeps track of the new item (which also has to be 5 of 5). There should be no variance since it is deterministic. 
 
 ---
 
-## 4. Something about the fit card
+## 4. The fit card names the price and the platform
 
-<!-- YOU WRITE THIS ONE.
-
-     The fit card calls a model, so the same input can produce different words
-     each time. That's not a bug — it's the nature of the tool. So what would
-     make it acceptable?
-
-     Think about what you'd actually be unhappy to see. A caption that never
-     mentions the price? Two different items producing the same opening
-     sentence? A card longer than a caption anyone would post? Any of those can
-     be turned into a number. -->
-
+For 5 of 5, the fit card should mention the price and platform of the item. 
 
 
 **Why this target:**
-
+The fit card function is required to name the price and platform of the item. This is because we want someone else to read the fit card and find the item and maybe do the outfit themselves. Having the price and platform helps them find the item and actually decide if they want it (the price). So, we need 5 of 5 for this criteria.
 
 
 ---
 
-## 5. Your choice
+## 5. General Styling given for an empty wardrobe.
 
-<!-- YOU WRITE THIS ONE TOO.
-
-     Pick something you actually care about getting right. Speed, the empty
-     wardrobe path, what happens when the model can't be reached, whether the
-     search respects a price ceiling — anything, as long as it names a number
-     or an observable outcome. -->
-
+For 5 of 5, an empty wardrobe in suggest_outfit still produces a result that gives general styling advice for the thrifted item of at least 150 characters. It should also still reach create_fit_card. Also, the suggestion should contain a phrase talking about how it is general advice and not based on an existing wardrobe.
 
 
 **Why this target:**
-
+suggest_outfit shouldn't end on "" or something vague. It should still give good enough general advice that can lead to a good fit card. 150 characters helps prevents this. Also, this helps in the new user case where they don't have a wardrobe, so we don't want to treat this as an edge case but something normal.
 
 
 ---
