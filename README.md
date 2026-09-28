@@ -39,8 +39,9 @@
 
 ## What This Does
 
-<!-- Three or four sentences: what a user asks for, and what they get back. -->
+You tell FitFindr what you're after — "vintage graphic tee under $30", "corduroy jacket size L under $45" — and it searches 40 second-hand listings, picks the best match, works out how it would go with clothes you already own, and writes the caption you'd post about the find. It's a command line tool: python app.py ask 'your query'.
 
+When nothing matches, it stops and tells you which of the three things you control — the words, the size, the price ceiling — to change. It doesn't hand an empty result to the next tool and hope.
 
 
 ---
@@ -95,39 +96,58 @@ than raising.
 
 ## Planning Loop
 
-<!-- Your branch rule, stated as a rule — the condition AND both paths — plus
-     the file and function that holds it.
+**Branch rule:**If `search_listings` returns an empty list, put a message in `session["error"]` naming what the user could change, and return the session without calling `suggest_outfit`. Otherwise take the first result, put it in `session["selected_item"]`, and continue.
 
-     Like this:
-       "If search_listings returns an empty list, put a message in the session
-        and stop. Otherwise take the first result and go to suggest_outfit."
-        — agent.py::run_agent
+**Where it lives:** `agent.py::run_agent` (the empty-case message is built by `agent.py::_nothing_found_message`.)
 
-     The grader checks your code against what you claim here, so the file and
-     function have to be real. -->
+**How the query is parsed:** parsing is regex, in `agent.py::parse_query`, not a model call. Three reasons: it's free, it returns the same answer twice (criterion 3 depends on that), and when it's wrong the reason is readable in the pattern instead of being a model's opinion. 
 
-**Branch rule:**
-
-**Where it lives:** `agent.py::run_agent`
-
-**How the query is parsed:** <!-- regex, string splitting, or asking the model — say which -->
-
-**What moves through the session:** <!-- which fields, in what order -->
+**What moves through the session:** Everything goes through the session. `search_listings` writes to `session["search_results"]`; the next step reads `session["search_results"][0]` back out and writes `session["selected_item"]`; suggest_outfit is called with that.
 
 ---
 
 ## Sample Run
 
-<!-- Two things go here.
-
-     1. One FULL query and its output, pasted as text.
-     2. Your three per-tool terminal tests — the command and what it printed. -->
-
 **One full query**
 
 ```
 $ python app.py ask 'corduroy jacket size L under $45'
+[1] parse_query
+      in:  corduroy jacket size L under $45
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 1 items: Shacket — Olive Canvas
+      →    Found 1 matches
+[3] select_item
+      out: Shacket — Olive Canvas ($33.0, poshmark)
+[4] suggest_outfit
+      in:  Shacket — Olive Canvas ($33.0, poshmark)
+      out: Outfit 1: - Olive canvas shacket - White fitted basics top - Dark blue baggy denim bottoms - White chunky stre…
+      →    10 wardrobe item(s)
+[5] create_fit_card
+      in:  Shacket — Olive Canvas ($33.0, poshmark)
+      out: Scored this olive canvas shacket on poshmark for just 33.0 and it is seriously the ultimate transitional layer…
 
+  Found:    Shacket — Olive Canvas — $33.0 on poshmark
+
+  Outfit:   Outfit 1:
+- Olive canvas shacket
+- White fitted basics top
+- Dark blue baggy denim bottoms
+- White chunky streetwear sneakers
+- Black minimal everyday accessories
+
+Outfit 2:
+- Olive canvas shacket
+- Grey charcoal oversized cozy top
+- Khaki tan minimal wide-leg bottoms
+- Black grunge classic boots
+- Brown classic earth tones accessories
+
+  Fit card: Scored this olive canvas shacket on poshmark for just 33.0 and it is seriously the ultimate transitional layer. I've already planned two completely different ways to wear it, from crisp white basics and baggy denim to cozy charcoal and chunky boots. It has that perfect heavy-duty feel without being too warm for everyday running around.
+
+2 model calls this session, 754 prompt + 146 output tokens
 ```
 
 **The three tools, tested one at a time**
@@ -167,24 +187,17 @@ No fit card — create_fit_card was called with no outfit suggestion, so there w
 
 ## How I Used AI
 
-<!-- Two specific moments. What you asked, what came back, what you changed.
-
-     "I used Claude to help me code" is not enough.
-
-     "I gave Claude my search_listings spec. It returned None on no match
-     instead of an empty list, so I changed it" is the level we want. -->
-
 **Moment 1**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* I asked for explanations of regular expressions I can use for the tool calls in short and simple terms.
+- *What came back:* It gave me short explanations but was too general sometimes.
+- *What I changed:*I made it specific to certain parts of functions and files.
 
 **Moment 2**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* I asked for the explanation of the agent.py file in short terms.
+- *What came back:* It explained in bullet points what the file contains and did and needed to implement. 
+- *What I changed:* I didn't make any changes.
 
 <!-- ═══════════════════════ UNIT 4 — THE TEST ═══════════════════════
 
