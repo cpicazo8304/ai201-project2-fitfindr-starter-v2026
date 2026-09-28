@@ -126,27 +126,43 @@ than raising.
 **One full query**
 
 ```
-$ python app.py ask '...'
+$ python app.py ask 'corduroy jacket size L under $45'
 
 ```
 
 **The three tools, tested one at a time**
 
 ```
-$ python -c "from tools import search_listings; print(search_listings('graphic tee', max_price=30))"
+$ python -c "from tools import search_listings; print(len(search_listings('graphic tee', max_price=30)))"
+6
+```
 
+
+```
+$ python -c "from tools import search_listings; print(search_listings('designer ballgown', 'XXS', 5))"
+[]
 ```
 
 ```
-$ python -c "from tools import suggest_outfit; ..."
+$ python -c "from tools import suggest_outfit; from utils.data_loader import load_listings, get_example_wardrobe; print(suggest_outfit(load_listings()[0], get_example_wardrobe())[:])"
+Outfit 1:
+- Vintage Levi's 501 Jeans
+- White fitted t-shirt
+- Black denim jacket
+- White chunky sneakers
+- Black minimal belt
+
+Outfit 2:
+- Vintage Levi's 501 Jeans
+- Grey oversized hoodie
+- Black grunge boots
+- Brown classic belt
 
 ```
-
 ```
-$ python -c "from tools import create_fit_card; ..."
-
+$ python -c "from tools import create_fit_card; from utils.data_loader import load_listings; print(create_fit_card('', load_listings()[0]))"
+No fit card — create_fit_card was called with no outfit suggestion, so there was nothing to write about. Check that suggest_outfit returned something before this step.
 ```
-
 ---
 
 ## How I Used AI

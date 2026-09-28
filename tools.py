@@ -240,7 +240,8 @@ def suggest_outfit(new_item: dict, wardrobe: dict) -> str:
             f"{owned}",
             f"Give specific outfit suggestions using only the items they already own.",
             f"Don't use any outside information or introduce new items.",
-            f"Please give two outfit suggestions."
+            f"Please give two outfit suggestions.",
+            f"Format with 'Outfit 1:' and 'Outfit 2:', naming each choice on a separate line in a dash list."
         ])
     return generate(prompt, system=_OUTFIT_SYSTEM)
 
@@ -307,5 +308,5 @@ def create_fit_card(outfit: str, new_item: dict) -> str:
         f"Don't just list them and write them naturally in sentences.",
         f"It has to be like a post, not a product description."
     ])
-    
+
     return generate(prompt, system=_CARD_SYSTEM)
