@@ -47,36 +47,49 @@
 
 ## Tool Inventory
 
-<!-- Four lines per tool. This is worth 2 points and it's the single most
-     common place students lose them.
-
-     "Returns a list" earns NOTHING. The description has to say what is IN
-     the list.
-
-     The empty case isn't optional either — it's the thing your loop branches
-     on, and if you don't decide it here you'll discover it as a crash in
-     Milestone 5. -->
-
 ### `search_listings`
 
-- **What it does:**
-- **Inputs:** <!-- name and type each: `max_price` (float), not "a price" -->
-- **Returns:**
-- **When it has nothing:**
+- **What it does:** Searches the 40-listing catalogue and returns matches, best first.
+- **Inputs:** 
+| Input | Type | Notes |
+|---|---|---|
+| `description` | `str` | Free text. Matched as keywords against title, description, category, brand, style tags and colours |
+| `size` | `str \| None` | Optional. `None` skips size filtering entirely |
+| `max_price` | `float \| None` | Optional, in dollars, **inclusive** |
+- **Returns:**  `list[dict]`. Each dict has `id`, `title`, `description`,
+`category`, `style_tags` (list), `size`, `condition`, `price` (float), `colors`
+(list), `brand` (`str` or `None`), `platform`. Ordered by keyword-overlap score
+descending, then by price ascending
+- **When it has nothing:** returns `[]`. Not `None`, not an exception.
 
 ### `suggest_outfit`
 
-- **What it does:**
+- **What it does:** Suggest an outfit or two given the wardrobe and the new item that was thrifted.
 - **Inputs:**
-- **Returns:**
-- **When it has nothing:**
+| Input | Type | Notes |
+|---|---|---|
+| `new_item` | `dict` | a listing dict — the item the user is considering.|
+| `wardrobe` | `dict` | a wardrobe dict with an 'items' key holding a list of items.
+**It may be empty.** |
+- **Returns:** A non-empty string with outfit suggestions.
+- **When it has nothing:** an empty wardrobe is not an error. It returns general
+advice describing pieces generically, opening with a line saying the ideas are
+general because no wardrobe is saved. It never returns `""`.
 
 ### `create_fit_card`
 
-- **What it does:**
+- **What it does:** Write a short caption someone would actually post about the find.
 - **Inputs:**
-- **Returns:**
-- **When it has nothing:**
+| Input | Type | Notes |
+|---|---|---|
+| `outfit` | `str` | The suggestion string from `suggest_outfit` |
+| `new_item` | `dict` | The listing dict |
+- **Returns:** A two-to-four sentence caption.
+If `outfit` is empty or whitespace, return a descriptive message rather
+than raising.
+- **When it has nothing:** If `outfit` is empty or whitespace, return a descriptive message rather
+than raising.
+
 
 ---
 

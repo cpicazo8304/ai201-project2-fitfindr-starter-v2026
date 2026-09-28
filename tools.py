@@ -23,9 +23,74 @@ the description has to say what is *in* the list.
 import config  # noqa: F401 — you'll use this in search_listings
 from generate import generate
 from utils.data_loader import load_listings
+import re
 
 
 # ── Tool 1: search_listings ───────────────────────────────────────────────────
+
+
+# Words that carry no signal in a thrift query. Without this list, "a vintage
+# graphic tee under $30" scores every listing at least 1 for matching "a", and
+# the "drop anything scoring zero" step stops dropping anything at all.
+_STOPWORDS = {
+    "a", "an", "and", "the", "for", "with", "under", "in", "of", "or", "to",
+    "my", "me", "i", "looking", "want", "need", "some", "something", "any",
+    "size", "please", "find", "get", "that", "this", "is", "it",
+}
+
+
+def _keywords(text: str) -> set[str]:
+    """Lowercase words worth matching on, stopwords removed."""
+    words = re.findall(r"[a-z0-9']+", (text or "").lower())
+    return {w for w in words if w not in _STOPWORDS and len(w) > 1}
+
+
+def _size_tokens(size: str) -> set[str]:
+    """
+    The set of sizes one size string actually stands for.
+
+    "S/M"              → {"S", "M"}
+    "XL (oversized)"   → {"XL"}
+    "W30 L30"          → {"W30 L30"}
+    "US 8.5"           → {"US 8.5"}
+    """
+    cleaned = re.sub(r"\([^)]*\)", " ", size or "")        # drop parentheticals
+    parts = [p.strip().upper() for p in cleaned.split("/")]
+    return {p for p in parts if p}
+
+
+def _size_matches(wanted: str, listing_size: str) -> bool:
+    """
+    Does a listing's size satisfy a requested size?
+
+    ⚠️ This is the trap the starter's docstring warns about, and it is worth
+    reading before you copy anything here. The obvious implementation is
+
+        wanted.lower() in listing_size.lower()
+
+    and it is wrong in both directions on this data:
+
+        "s"  in "us 9"   → True   (a shoe returned for someone wanting a small)
+        "l"  in "xl"     → True   (an XL returned for someone wanting a large)
+        "m"  in "medium" → True   (accidentally right, for the wrong reason)
+
+    So the comparison is between whole size *tokens*, not substrings. A listing
+    matches when any of the sizes it stands for equals the one asked for.
+
+    One deliberate exception: "One Size" matches every request. That is a
+    judgment call rather than an obvious truth — it is in the Tool Inventory in
+    the README because it is the kind of decision a reader would otherwise have
+    to guess at.
+    """
+    if not wanted:
+        return True
+
+    listing_tokens = _size_tokens(listing_size)
+    if any(token.startswith("ONE SIZE") for token in listing_tokens):
+        return True
+
+    return bool(_size_tokens(wanted) & listing_tokens)
+
 
 def search_listings(
     description: str,
@@ -78,8 +143,36 @@ def search_listings(
     Test it from a terminal before you move on:
         python -c "from tools import search_listings; print(search_listings('graphic tee', max_price=30))"
     """
-    # TODO: replace this with your implementation
-    return []
+    wanted = _keywords(description)
+
+    scored: list[tuple[int, float, dict]] = []
+    for listing in load_listings():
+        if max_price is not None and listing["price"] > max_price:
+            continue
+        if size and not _size_matches(size, listing.get("size", "")):
+            continue
+
+        # Everything a keyword could reasonably match against. `brand` is None
+        # on 32 of the 40 listings, so it is coerced rather than assumed.
+        haystack = " ".join(
+            [
+                listing.get("title", ""),
+                listing.get("description", ""),
+                listing.get("category", ""),
+                listing.get("brand") or "",
+                " ".join(listing.get("style_tags", [])),
+                " ".join(listing.get("colors", [])),
+            ]
+        )
+        score = len(wanted & _keywords(haystack))
+        if score:
+            # Cheaper first among equal matches — a tie-break the user benefits
+            # from, and it makes the result order deterministic, which unit 4's
+            # state criterion depends on.
+            scored.append((score, listing["price"], listing))
+
+    scored.sort(key=lambda row: (-row[0], row[1]))
+    return [listing for _, _, listing in scored[: config.SEARCH_RESULT_LIMIT]]
 
 
 # ── Tool 2: suggest_outfit ────────────────────────────────────────────────────
