@@ -268,26 +268,47 @@ that produced it:
 
 ## Loop Trace
 
-<!-- One full run, printed step by step, with the MCP call visible in it.
-
-     `python app.py ask '...' --trace` once you've added the trace.step()
-     calls in Milestone 2.
-
-     Worth pasting BOTH the happy path and the empty-search path. The empty
-     one should be visibly shorter, because it stops. If your two traces are
-     the same length, your branch isn't working — and this is the fastest way
-     anyone will ever find that out. -->
-
 **Happy path**
 
 ```
+$python app.py ask 'Platform Mary Janes under $55' --trace
 
+[1] parse_query
+      in:  Platform Mary Janes under $55
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 2 items: Platform Mary Janes — Black Patent, Platform Sneakers — White Chunky Sole
+      →    Found 2 matches
+[3] select_item
+      out: Platform Mary Janes — Black Patent ($55.0, depop)
+[4] suggest_outfit
+      in:  Platform Mary Janes — Black Patent ($55.0, depop)
+      out: Outfit 1: - Black cropped athletic top - Dark blue baggy denim bottoms - Black vintage classic denim outerwear…
+      →    10 wardrobe item(s)
+[5] create_fit_card
+      in:  Platform Mary Janes — Black Patent ($55.0, depop)
+      out: Finally scored these Demonia patent platforms on depop for $55.0 and I am already obsessed with them. They add…
+
+  Found:    Platform Mary Janes — Black Patent — $55.0 on depop
 ```
 
 **Empty search**
 
 ```
+$python app.py ask 'nfl jersey' --trace
+[1] parse_query
+      in:  nfl jersey
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: [] (empty)
+      →    Found 0 matches
+[3] branch
+      →    search returned []: stopping before suggest_outfit
 
+  Nothing in the listings matched description 'nfl jersey'.
+Things to change: try broader words — 'jacket' finds more than 'cropped corduroy jacket'.
 ```
 
 **On the MCP move:** <!-- what changed in your code, and whether anything
