@@ -1,0 +1,507 @@
+matching query completes  (example wardrobe)
+  query: vintage graphic tee under $30
+[1] parse_query
+      in:  vintage graphic tee under $30
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 10 items: Y2K Baby Tee — Butterfly Print, Vintage Band Tee — Faded Grey, Graphic Tee — 2003 Tour Bootleg Style … +7 more
+      →    Found 10 matches
+[3] select_item
+      out: Y2K Baby Tee — Butterfly Print ($18.0, depop)
+[4] suggest_outfit
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Outfit 1: - Y2K baby tee with butterfly print - Indigo baggy denim bottoms -White chunky streetwear sneakers …
+      →    10 wardrobe item(s)
+[5] create_fit_card
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Found the ultimate early 2000s butterfly tee on depop for just 18.0 and I amalready obsessed. I'm styling it …
+  try 1: completed — fit card 320 chars
+[1] parse_query
+      in:  vintage graphic tee under $30
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 10 items: Y2K Baby Tee — Butterfly Print, Vintage Band Tee — Faded Grey, Graphic Tee — 2003 Tour Bootleg Style … +7 more
+      →    Found 10 matches
+[3] select_item
+      out: Y2K Baby Tee — Butterfly Print ($18.0, depop)
+[4] suggest_outfit
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Outfit 1: - Y2K Baby Tee — Butterfly Print - None (bottoms, dark blue, indigo, baggy, denim) - None (shoes, wh…
+      →    10 wardrobe item(s)
+[5] create_fit_card
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Scored this little butterfly tee on depop for just 18.0 and I am already obsessed with the early 2000s fit. I'…
+  try 2: completed — fit card 348 chars
+[1] parse_query
+      in:  vintage graphic tee under $30
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 10 items: Y2K Baby Tee — Butterfly Print, Vintage Band Tee — Faded Grey, Graphic Tee — 2003 Tour Bootleg Style … +7 more
+      →    Found 10 matches
+[3] select_item
+      out: Y2K Baby Tee — Butterfly Print ($18.0, depop)
+[4] suggest_outfit
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Outfit 1: - Y2K baby tee with butterfly print - Baggy indigo denim bottoms -Chunky white streetwear sneakers …
+      →    10 wardrobe item(s)
+[5] create_fit_card
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Just scored this adorable Y2K butterfly tee for only $18.0 on depop and I amobsessed. I am totally styling it…
+  try 3: completed — fit card 287 chars
+[1] parse_query
+      in:  vintage graphic tee under $30
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 10 items: Y2K Baby Tee — Butterfly Print, Vintage Band Tee — Faded Grey, Graphic Tee — 2003 Tour Bootleg Style … +7 more
+      →    Found 10 matches
+[3] select_item
+      out: Y2K Baby Tee — Butterfly Print ($18.0, depop)
+[4] suggest_outfit
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Outfit 1: - Y2K baby tee with butterfly print - Baggy indigo denim bottoms -Chunky white streetwear sneakers …
+      →    10 wardrobe item(s)
+[5] create_fit_card
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Just scored the ultimate Y2K butterfly baby tee on depop for only $18.0 and I am already obsessed. It is givin…
+  try 4: completed — fit card 286 chars
+[1] parse_query
+      in:  vintage graphic tee under $30
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 10 items: Y2K Baby Tee — Butterfly Print, Vintage Band Tee — Faded Grey, Graphic Tee — 2003 Tour Bootleg Style … +7 more
+      →    Found 10 matches
+[3] select_item
+      out: Y2K Baby Tee — Butterfly Print ($18.0, depop)
+[4] suggest_outfit
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Outfit 1: - Y2K baby tee with butterfly print - Baggy indigo denim bottoms -Chunky white streetwear sneakers …
+      →    10 wardrobe item(s)
+[5] create_fit_card
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Scored this adorable little butterfly baby tee on depop for just 18.0 and I am obsessed. I've been living in i…
+  try 5: completed — fit card 310 chars
+
+impossible query stops early  (example wardrobe)
+  query: designer ballgown size XXS under $5
+[1] parse_query
+      in:  designer ballgown size XXS under $5
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: [] (empty)
+      →    Found 0 matches
+[3] branch
+      →    search returned []: stopping before suggest_outfit
+  try 1: stopped early — Nothing in the listings matched description 'designer ballgo
+[1] parse_query
+      in:  designer ballgown size XXS under $5
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: [] (empty)
+      →    Found 0 matches
+[3] branch
+      →    search returned []: stopping before suggest_outfit
+  try 2: stopped early — Nothing in the listings matched description 'designer ballgo
+[1] parse_query
+      in:  designer ballgown size XXS under $5
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: [] (empty)
+      →    Found 0 matches
+[3] branch
+      →    search returned []: stopping before suggest_outfit
+  try 3: stopped early — Nothing in the listings matched description 'designer ballgo
+[1] parse_query
+      in:  designer ballgown size XXS under $5
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: [] (empty)
+      →    Found 0 matches
+[3] branch
+      →    search returned []: stopping before suggest_outfit
+  try 4: stopped early — Nothing in the listings matched description 'designer ballgo
+[1] parse_query
+      in:  designer ballgown size XXS under $5
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: [] (empty)
+      →    Found 0 matches
+[3] branch
+      →    search returned []: stopping before suggest_outfit
+  try 5: stopped early — Nothing in the listings matched description 'designer ballgo
+
+empty wardrobe  (empty wardrobe)
+  query: denim jacket under $50
+[1] parse_query
+      in:  denim jacket under $50
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 7 items: Denim Jacket — Light Wash, Cropped, High-Waisted Denim Shorts — Cutoff, Denim Vest — Medium Wash, Studded … +4 more
+      →    Found 7 matches
+[3] select_item
+      out: Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+[4] suggest_outfit
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Since you don't have a set wardrobe, here are two general outfit ideas to get you started.  Pair the cropped l…
+      →    0 wardrobe item(s)
+[5] create_fit_card
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Scored this vintage Wrangler cropped denim jacket on poshmark for just $42.0and the structured shoulders are …
+  try 1: completed — fit card 305 chars
+[1] parse_query
+      in:  denim jacket under $50
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 7 items: Denim Jacket — Light Wash, Cropped, High-Waisted Denim Shorts — Cutoff, Denim Vest — Medium Wash, Studded … +4 more
+      →    Found 7 matches
+[3] select_item
+      out: Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+[4] suggest_outfit
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Since you don't have a set wardrobe yet, these are general ideas to build around.  Look one: Layer the cropped…
+      →    0 wardrobe item(s)
+[5] create_fit_card
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Scored this vintage Wrangler denim jacket on Poshmark for just $42.0 and it's already becoming my ultimate eve…
+  try 2: completed — fit card 282 chars
+[1] parse_query
+      in:  denim jacket under $50
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 7 items: Denim Jacket — Light Wash, Cropped, High-Waisted Denim Shorts — Cutoff, Denim Vest — Medium Wash, Studded … +4 more
+      →    Found 7 matches
+[3] select_item
+      out: Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+[4] suggest_outfit
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Pair the jacket with a black ribbed crop tank, Levi's Wedgie fit vintage blue jeans, and Converse Chuck Taylor…
+      →    0 wardrobe item(s)
+  [rate limit] 15 requests used this minute. Waiting 19s. This is normal.
+[5] create_fit_card
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Scored this vintage Wrangler denim jacket on Poshmark for just $42.0 and I'malready obsessed with the structu…
+  try 3: completed — fit card 375 chars
+[1] parse_query
+      in:  denim jacket under $50
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 7 items: Denim Jacket — Light Wash, Cropped, High-Waisted Denim Shorts — Cutoff, Denim Vest — Medium Wash, Studded … +4 more
+      →    Found 7 matches
+[3] select_item
+      out: Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+[4] suggest_outfit
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Pair the light wash cropped denim jacket with a black cotton ribbed crop top, vintage Levi's 501 high-waisted …
+      →    0 wardrobe item(s)
+[5] create_fit_card
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Scored this Wrangler cropped denim jacket on Poshmark for just $42.0 and I'mobsessed with the structured shou…
+  try 4: completed — fit card 319 chars
+[1] parse_query
+      in:  denim jacket under $50
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 7 items: Denim Jacket — Light Wash, Cropped, High-Waisted Denim Shorts — Cutoff, Denim Vest — Medium Wash, Studded … +4 more
+      →    Found 7 matches
+[3] select_item
+      out: Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+[4] suggest_outfit
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Pair the light wash denim jacket with a black ribbed cotton mock-neck tank top, forest green wide-leg cargo tr…
+      →    0 wardrobe item(s)
+  [rate limit] 15 requests used this minute. Waiting 2s. This is normal.
+[5] create_fit_card
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Stumbled on this vintage Wrangler cropped denim jacket on Poshmark and had to grab it for just 42.0. The struc…
+  try 5: completed — fit card 261 chars
+
+state survives the handoff  (example wardrobe)
+  query: corduroy jacket size L under $45
+[1] parse_query
+      in:  corduroy jacket size L under $45
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 1 items: Shacket — Olive Canvas
+      →    Found 1 matches
+[3] select_item
+      out: Shacket — Olive Canvas ($33.0, poshmark)
+[4] suggest_outfit
+      in:  Shacket — Olive Canvas ($33.0, poshmark)
+      out: Outfit 1: - Olive canvas shacket - Fitted white top - Baggy indigo denim bottoms - Chunky white sneakers - Min…
+      →    10 wardrobe item(s)
+[5] create_fit_card
+      in:  Shacket — Olive Canvas ($33.0, poshmark)
+      out: Scored this olive canvas shacket on poshmark for just 33.0 and it is honestly the ultimate transitional layer.…
+  try 1: completed — fit card 262 chars
+[1] parse_query
+      in:  corduroy jacket size L under $45
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 1 items: Shacket — Olive Canvas
+      →    Found 1 matches
+[3] select_item
+      out: Shacket — Olive Canvas ($33.0, poshmark)
+[4] suggest_outfit
+      in:  Shacket — Olive Canvas ($33.0, poshmark)
+      out: Outfit 1: - Olive canvas shacket - Fitted white top - Baggy indigo denim bottoms - Chunky white sneakers - Min…
+      →    10 wardrobe item(s)
+[5] create_fit_card
+      in:  Shacket — Olive Canvas ($33.0, poshmark)
+      out: Snagged this olive canvas shacket on Poshmark for just 33.0 and honestly haven't taken it off since. It's the …
+  try 2: completed — fit card 285 chars
+[1] parse_query
+      in:  corduroy jacket size L under $45
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 1 items: Shacket — Olive Canvas
+      →    Found 1 matches
+[3] select_item
+      out: Shacket — Olive Canvas ($33.0, poshmark)
+[4] suggest_outfit
+      in:  Shacket — Olive Canvas ($33.0, poshmark)
+      out: Outfit 1: - Olive canvas shacket - Fitted white top - Baggy indigo denim bottoms - Chunky white sneakers - Min…
+      →    10 wardrobe item(s)
+  [rate limit] 15 requests used this minute. Waiting 12s. This is normal.
+[5] create_fit_card
+      in:  Shacket — Olive Canvas ($33.0, poshmark)
+      out: Scored this olive canvas shacket on poshmark for just 33.0 and it is literally the ultimate layering piece for…
+  try 3: completed — fit card 361 chars
+[1] parse_query
+      in:  corduroy jacket size L under $45
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 1 items: Shacket — Olive Canvas
+      →    Found 1 matches
+[3] select_item
+      out: Shacket — Olive Canvas ($33.0, poshmark)
+[4] suggest_outfit
+      in:  Shacket — Olive Canvas ($33.0, poshmark)
+      out: Outfit 1: - Olive canvas shacket - White fitted t-shirt - Indigo baggy denimjeans - White chunky sneakers - B…
+      →    10 wardrobe item(s)
+[5] create_fit_card
+      in:  Shacket — Olive Canvas ($33.0, poshmark)
+      out: Scored this olive canvas shacket on Poshmark for just 33.0 and it is seriously the ultimate transitional layer…
+  try 4: completed — fit card 316 chars
+[1] parse_query
+      in:  corduroy jacket size L under $45
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 1 items: Shacket — Olive Canvas
+      →    Found 1 matches
+[3] select_item
+      out: Shacket — Olive Canvas ($33.0, poshmark)
+[4] suggest_outfit
+      in:  Shacket — Olive Canvas ($33.0, poshmark)
+      out: Outfit 1: - Olive canvas shacket - White fitted t-shirt - Indigo baggy denimjeans - White chunky sneakers - B…
+      →    10 wardrobe item(s)
+[5] create_fit_card
+      in:  Shacket — Olive Canvas ($33.0, poshmark)
+      out: Scored this olive canvas shacket on poshmark for only 33.0 and it is seriously the ultimate layering piece. I'…
+  try 5: completed — fit card 330 chars
+
+fit card names price and platform  (example wardrobe)
+  query: y2k baby tee under $20
+[1] parse_query
+      in:  y2k baby tee under $20
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 4 items: Y2K Baby Tee — Butterfly Print, Mesh Long-Sleeve Top — Black, BikerShorts — Black, Shiny … +1 more
+      →    Found 4 matches
+[3] select_item
+      out: Y2K Baby Tee — Butterfly Print ($18.0, depop)
+  [rate limit] 15 requests used this minute. Waiting 19s. This is normal.
+[4] suggest_outfit
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Outfit 1: - Y2K baby tee with butterfly print - Baggy indigo denim bottoms -Chunky white sneakers - Minimal b…
+      →    10 wardrobe item(s)
+  [rate limit] 15 requests used this minute. Waiting 3s. This is normal.
+[5] create_fit_card
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Just scored this absolute dream of a butterfly baby tee on depop for only 18.0 and I am already obsessing over…
+  try 1: completed — fit card 380 chars
+[1] parse_query
+      in:  y2k baby tee under $20
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 4 items: Y2K Baby Tee — Butterfly Print, Mesh Long-Sleeve Top — Black, BikerShorts — Black, Shiny … +1 more
+      →    Found 4 matches
+[3] select_item
+      out: Y2K Baby Tee — Butterfly Print ($18.0, depop)
+[4] suggest_outfit
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Outfit 1: - Y2K Baby Tee — Butterfly Print - dark blue, indigo baggy denim bottoms - white chunky streetwear s…
+      →    10 wardrobe item(s)
+[5] create_fit_card
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Found this absolute gem of a butterfly baby tee scrolling on depop for just 18.0 and I am obsessed. I’m stylin…
+  try 2: completed — fit card 320 chars
+[1] parse_query
+      in:  y2k baby tee under $20
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 4 items: Y2K Baby Tee — Butterfly Print, Mesh Long-Sleeve Top — Black, BikerShorts — Black, Shiny … +1 more
+      →    Found 4 matches
+[3] select_item
+      out: Y2K Baby Tee — Butterfly Print ($18.0, depop)
+[4] suggest_outfit
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Outfit 1: - Y2K baby tee with butterfly print - Baggy indigo denim bottoms -Chunky white sneakers - Minimal b…
+      →    10 wardrobe item(s)
+  [rate limit] 15 requests used this minute. Waiting 2s. This is normal.
+[5] create_fit_card
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Found this absolute dream of a baby tee scrolling depop for just 18.0 and I am entirely obsessed with the butt…
+  try 3: completed — fit card 379 chars
+[1] parse_query
+      in:  y2k baby tee under $20
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 4 items: Y2K Baby Tee — Butterfly Print, Mesh Long-Sleeve Top — Black, BikerShorts — Black, Shiny … +1 more
+      →    Found 4 matches
+[3] select_item
+      out: Y2K Baby Tee — Butterfly Print ($18.0, depop)
+[4] suggest_outfit
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Outfit 1: - Y2K Baby Tee — Butterfly Print - dark blue, indigo baggy denim bottoms - white chunky streetwear s…
+      →    10 wardrobe item(s)
+[5] create_fit_card
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: I scored this little butterfly tee on depop for just 18.0 and I am already obsessed with how tiny and nostalgi…
+  try 4: completed — fit card 388 chars
+[1] parse_query
+      in:  y2k baby tee under $20
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 4 items: Y2K Baby Tee — Butterfly Print, Mesh Long-Sleeve Top — Black, BikerShorts — Black, Shiny … +1 more
+      →    Found 4 matches
+[3] select_item
+      out: Y2K Baby Tee — Butterfly Print ($18.0, depop)
+[4] suggest_outfit
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: Outfit 1: - Y2K Baby Tee — Butterfly Print — tops, size S/M, excellent condition, colours: white, pink, purple…
+      →    10 wardrobe item(s)
+[5] create_fit_card
+      in:  Y2K Baby Tee — Butterfly Print ($18.0, depop)
+      out: I still can't believe I scored this little Y2K butterfly tee for just 18.0 on depop. It is giving all the nost…
+  try 5: completed — fit card 288 chars
+
+empty wardrobe still produces advice  (empty wardrobe)
+  query: denim jacket under $50
+[1] parse_query
+      in:  denim jacket under $50
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 7 items: Denim Jacket — Light Wash, Cropped, High-Waisted Denim Shorts — Cutoff, Denim Vest — Medium Wash, Studded … +4 more
+      →    Found 7 matches
+[3] select_item
+      out: Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+  [rate limit] 15 requests used this minute. Waiting 10s. This is normal.
+[4] suggest_outfit
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: These are general ideas since you don't have an established wardrobe yet.  Look one leans casual streetwear. P…
+      →    0 wardrobe item(s)
+  [rate limit] 15 requests used this minute. Waiting 1s. This is normal.
+[5] create_fit_card
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Scored this vintage Wrangler cropped denim jacket on Poshmark for just 42.0 and I am already obsessed with the…
+  try 1: completed — fit card 371 chars
+[1] parse_query
+      in:  denim jacket under $50
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 7 items: Denim Jacket — Light Wash, Cropped, High-Waisted Denim Shorts — Cutoff, Denim Vest — Medium Wash, Studded … +4 more
+      →    Found 7 matches
+[3] select_item
+      out: Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+[4] suggest_outfit
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Since you do not have a set wardrobe, here are two general styling ideas to get you started.  Pair the cropped…
+      →    0 wardrobe item(s)
+[5] create_fit_card
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Scored this vintage Wrangler denim jacket on Poshmark for just 42.0 and I'm obsessed with the structured shoul…
+  try 2: completed — fit card 287 chars
+[1] parse_query
+      in:  denim jacket under $50
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 7 items: Denim Jacket — Light Wash, Cropped, High-Waisted Denim Shorts — Cutoff, Denim Vest — Medium Wash, Studded … +4 more
+      →    Found 7 matches
+[3] select_item
+      out: Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+[4] suggest_outfit
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Pair the cropped light wash denim jacket with a black cotton ribbed tank top, high-waisted olive green cargo t…
+      →    0 wardrobe item(s)
+  [rate limit] 15 requests used this minute. Waiting 14s. This is normal.
+[5] create_fit_card
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Scored this vintage Wrangler denim jacket on Poshmark for just 42.0 and I'm obsessed with the structured shoul…
+  try 3: completed — fit card 346 chars
+[1] parse_query
+      in:  denim jacket under $50
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 7 items: Denim Jacket — Light Wash, Cropped, High-Waisted Denim Shorts — Cutoff, Denim Vest — Medium Wash, Studded … +4 more
+      →    Found 7 matches
+[3] select_item
+      out: Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+[4] suggest_outfit
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Since you do not have a set wardrobe yet, these are general styling ideas toget you started.  Outfit one lean…
+      →    0 wardrobe item(s)
+  [rate limit] 15 requests used this minute. Waiting 1s. This is normal.
+[5] create_fit_card
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Scored this vintage Wrangler denim jacket on Poshmark for just 42.0 and I amalready obsessed with the structu…
+  try 4: completed — fit card 289 chars
+[1] parse_query
+      in:  denim jacket under $50
+      out: dict with keys: description, size, max_price
+[2] search_listings
+      in:  dict with keys: description, size, max_price
+      out: 7 items: Denim Jacket — Light Wash, Cropped, High-Waisted Denim Shorts — Cutoff, Denim Vest — Medium Wash, Studded … +4 more
+      →    Found 7 matches
+[3] select_item
+      out: Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+[4] suggest_outfit
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Since you don't have a set wardrobe yet, these are general ideas to build around your new jacket.  Pair the li…
+      →    0 wardrobe item(s)
+[5] create_fit_card
+      in:  Denim Jacket — Light Wash, Cropped ($42.0, poshmark)
+      out: Scored this amazing cropped Wrangler denim jacket on Poshmark for only 42.0 and I am already obsessed with the…
+  try 5: completed — fit card 331 chars
+
+Wrote results\run_2026-10-02_2310_before.md
+50 model calls this session, 16375 prompt + 4058 output tokens
+
+Commit this file. It's the evidence the test actually happened.

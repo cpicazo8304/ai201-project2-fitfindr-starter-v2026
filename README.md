@@ -219,19 +219,47 @@ No fit card — create_fit_card was called with no outfit suggestion, so there w
 
 | Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |
 |---|---|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |  |  |
+| 1. matching query completes | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET |
+| 2. impossible query stops early | 5 of 5 | PASS | PASS |  PASS |  PASS | PASS | MET |
+| 3. state survives the handoff | 5 of 5 | PASS | PASS |  PASS |  PASS | PASS | MET |
+| 4. fit card names price and platform | 5 of 5 | FAIL | FAIL | FAIL | FAIL | FAIL | FAIL |
+| 5. empty wardrobe still produces advice | 5 of 5 | PASS | PASS | PASS | PASS | PASS | PASS |
 
-**Real output from one try**, pasted as text, naming the file and function
-that produced it:
+**Real output from one try**:
+
+**Criterion 2**, from `agent.py::run_agent` via the log:
 
 ```
-
+- stopped early: yes — Nothing in the listings matched description 'designer ballgown',
+  size XXS, under $5. Things to change: try broader words …
+- selected_item: (none)
+- search_results: 0
 ```
 
+**Criterion 3**, the two trace lines it compares, from `trace.py::step`:
+
+```
+[3] select_item
+      out: Shacket — Olive Canvas ($33.0, poshmark)
+[4] suggest_outfit
+      in:  Shacket — Olive Canvas ($33.0, poshmark)
+```
+
+**Criterion 4** — all five cards for the same item, from `tools.py::create_fit_card`:
+
+```
+Just scored this absolute dream of a butterfly baby tee on depop for only 18.0 and I am already obsessing over it. I am planning to lean all the way into the Y2K nostalgia with baggy denim and chunky sneakers, or grunge it down a bit with wide-leg khakis and my favorite heavy boots. Honestly, it is the ultimate little top for throwing on when you literally have nothing to wear.
+```
+
+**Criterion 5**, from `tools.py::suggest_outfit` with an empty wardrobe:
+
+```
+These are general ideas since you don't have an established wardrobe yet.
+
+Look one leans casual streetwear. Pair the cropped light wash denim jacket with black high-waisted wide-leg cargo pants, a plain white ribbed tank top, and white leather Reebok Club C sneakers. 
+
+Look two leans effortless everyday. Layer the jacket over a black ribbed cotton midi dress, and finish the outfit with well-worn Converse Chuck Taylor high-top sneakers and a black canvas tote bag.
+```
 ---
 
 ## Verdicts and Diagnoses

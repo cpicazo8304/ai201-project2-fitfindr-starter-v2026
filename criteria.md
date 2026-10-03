@@ -57,7 +57,18 @@ For 5 of 5, the fit card should mention the price and platform of the item.
 **Why this target:**
 The fit card function is required to name the price and platform of the item. This is because we want someone else to read the fit card and find the item and maybe do the outfit themselves. Having the price and platform helps them find the item and actually decide if they want it (the price). So, we need 5 of 5 for this criteria.
 
-
+> **Revised in unit 4:** Every fit card contains the price written as digits
+> (e.g. `$18`) and the platform name as it appears in the listing
+> (e.g. `Depop`), case-sensitively — 5 of 5 tries on the same item.
+>
+> **Why revised:** "names the price" turned out to be two different tests. Try 1
+> produced *"for just eighteen bucks"*, which names the price in the plain
+> sense of the phrase and cannot be checked by anything but me reading it and
+> deciding. I scored that as a pass on the first read and a fail on the second,
+> which is the same criterion giving two answers. The revision says what string
+> has to be present. **The 5-of-5 target has not moved** — the criterion was
+> missed either way, and this revision makes the miss legible rather than
+> smaller.
 ---
 
 ## 5. General Styling given for an empty wardrobe.
