@@ -222,8 +222,8 @@ No fit card — create_fit_card was called with no outfit suggestion, so there w
 | 1. matching query completes | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET |
 | 2. impossible query stops early | 5 of 5 | PASS | PASS |  PASS |  PASS | PASS | MET |
 | 3. state survives the handoff | 5 of 5 | PASS | PASS |  PASS |  PASS | PASS | MET |
-| 4. fit card names price and platform | 5 of 5 | FAIL | FAIL | FAIL | FAIL | FAIL | FAIL |
-| 5. empty wardrobe still produces advice | 5 of 5 | PASS | PASS | PASS | PASS | PASS | PASS |
+| 4. fit card names price and platform | 5 of 5 | FAIL | FAIL | FAIL | FAIL | FAIL | MISS |
+| 5. empty wardrobe still produces advice | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET |
 
 **Real output from one try**:
 
@@ -280,15 +280,39 @@ Look two leans effortless everyday. Layer the jacket over a black ribbed cotton 
      Look for a pattern. Three misses on the same tool is one problem, not
      three. -->
 
-| # | Criterion | Target | Verdict | How I decided |
-|---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
+| # | Criterion | Verdict | How I decided |
+|---|---|---|---|
+| 1 | Matching query completes | MET (5/5) | Target 4 of 5; every try produced a card. Nothing close about it. |
+| 2 | Impossible query stops early | MET (5/5) | All five stopped with `search_results: 0` and no fit card. Deterministic, as predicted. |
+| 3 | Item found is item passed on | MET (5/5) | Both halves held on all five — session id matched, and the trace lines are identical strings. |
+| 4 | Card names price and platform | **MISSED (0/5)** | Zero of five made it aware that the price was the price and the platform was the platform. Although others could infer from the surrounding words, it is better to be safe. Having a dollar sign for the price or a capitalized platform could help.|
+| 5 | Empty wardrobe produces advice | MET (5/5) | 414–490 characters, all five opened by saying the ideas were general, all five reached the fit card. |
 
-**Diagnoses**
+
+**The revision to criterion 4.** I wrote *"names the item's price"*, but I should make the target to have the price in digits and with the dollar symbol. Also, for the platform, it should be capitalized 
+to emphasize it. The revision made the miss legible, not smaller; under the generous reading the criterion was 5/5 and I'd have learned nothing.
+
+
+### Diagnosis — criterion 4
+
+**Step: `create_fit_card`. Not the tool, the prompt.**
+
+The information was never missing. `_describe_item` puts `$18.0 on depop` into
+the prompt on every call, and the platform came back correctly all five times
+from that same line. So this isn't retrieval, it isn't state, and it isn't the
+branch — the model had the number and chose how to write it.
+
+The problem was that my prompt didn't explain the specifics of how to include the
+price and the platform. If I wanted to make the price and platform obvious, I would
+have to include dollar signs and capitalization. The model did what it was told; 
+what it was told was ambiguous in the same way my criterion was.
+
+**The pattern worth naming:** the only criterion that missed is the only one
+whose pass condition depends on the *wording* a model chose rather than on a
+value my code controls. Criteria 1, 2, 3 and 5 all check things determined by
+Python — a branch, an assignment, a length. That's not luck. It's a warning
+about where to put criteria, and it cuts both ways: the four safe ones taught
+me nothing.
 
 
 
@@ -350,39 +374,47 @@ full. -->
 
 ## The Improvement
 
-<!-- What you changed, why your diagnosis pointed at it, and the after-run in
-     the same table format. One change, measured properly.
+**What I changed:** Added details to price and platform in prompt for `create_fit_card`. 
 
-     `python run_eval.py --label after` -->
+``
+...
+f"-Price (written in digits with $, not spelled out in words): {new_item.get('price', 'N/A')}",
+f"-Platform (first letter capitalized like a title): {new_item.get('platform', 'N/A')}",
+...
+```
 
-**What I changed:**
-
-**Which failure it was meant to fix:**
+**Which failure it was meant to fix:** This was meant to fix the specifics for criterion 4 of having the price in the format "${digits}" and the platform capitalized like a title. 
 
 ### Run Log — After
 
 | Criterion | Target | Try 1 | Try 2 | Try 3 | Try 4 | Try 5 | Verdict |
 |---|---|---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |  |  |
+| 1. matching query completes | 4 of 5 | PASS | PASS | PASS | PASS | PASS | MET |
+| 2. impossible query stops early | 5 of 5 | PASS | PASS |  PASS |  PASS | PASS | MET |
+| 3. state survives the handoff | 5 of 5 | PASS | PASS |  PASS |  PASS | PASS | MET |
+| 4. fit card names price and platform | 5 of 5 | FAIL | FAIL | FAIL | PASS | FAIL | MISS |
+| 5. empty wardrobe still produces advice | 5 of 5 | PASS | PASS | PASS | PASS | PASS | MET |
+
+**Before:**
+```
+Just scored this absolute dream of a butterfly baby tee on depop for only 18.0 and I am already obsessing over it. I am planning to lean all the way into the Y2K nostalgia with baggy denim and chunky sneakers, or grunge it down a bit with wide-leg khakis and my favorite heavy boots. Honestly, it is the ultimate little top for throwing on when you literally have nothing to wear.
+```
+
+**After:**
+
+```
+Scored this little butterfly tee on depop for just $18 and I am obsessed with the nostalgic pink and purple print. I am definitely styling it with baggy indigo denim and chunky sneakers for daytime, then swapping into khaki trousers and grunge boots when I want an edgier look.
+```
 
 **Did it help, and how do I know:**
 
-<!-- If it made things worse, say that. Honestly reported, that earns full
-     credit and is more interesting than one that worked. -->
-
-
+It did help with the price by adding the dollar sign, but didn't help with the platform being capitalized with the first letter ("Depop" vs. "depop").
 
 ---
 
 ## What's Still Broken
 
-<!-- For each criterion still missed: what you'd do, and why you stopped where
-     you did. "I ran out of time" is fine if it's true. Pretending nothing is
-     left is not. -->
+The capitalization in the first letter of the platform's name doesn't happen. It is a small issue. But, for a model that might not be as sophisticated as others, it could need an example in the prompt to help it get right. 
 
 
 
@@ -390,31 +422,31 @@ full. -->
 
      SUBMISSION CHECKLIST — unit 3
 
-       [ ] criteria.md has five numbered criteria, each with a target
-       [ ] Each criterion has a reason underneath it
-       [ ] All five unit 3 sections above have real content
-       [ ] Tool Inventory: all three tools, inputs WITH TYPES, a specific
+       [x] criteria.md has five numbered criteria, each with a target
+       [x] Each criterion has a reason underneath it
+       [x] All five unit 3 sections above have real content
+       [x] Tool Inventory: all three tools, inputs WITH TYPES, a specific
            return value, and the empty case
-       [ ] Planning Loop names the branch rule and agent.py::run_agent
-       [ ] Sample Run: one full query plus the three per-tool tests, as text
-       [ ] At least four new commits
-       [ ] Repository URL submitted — WRITE IT DOWN, you submit the same one
+       [x] Planning Loop names the branch rule and agent.py::run_agent
+       [x] Sample Run: one full query plus the three per-tool tests, as text
+       [x] At least four new commits
+       [x] Repository URL submitted — WRITE IT DOWN, you submit the same one
            next unit
 
      SUBMISSION CHECKLIST — unit 4
 
-       [ ] mcp_server.py exists with one tool registered
+       [x] mcp_server.py exists with one tool registered
            (or a written record of exactly where the rewire broke)
-       [ ] Run Log — Before, five criteria, five tries each
-       [ ] Real output pasted underneath, naming file and function
-       [ ] A verdict on every criterion
-       [ ] A diagnosis for every miss, naming a place AND a mechanism
-       [ ] Loop Trace, with the MCP call visible in it
-       [ ] All three failure modes triggered and handled
-       [ ] One improvement, with Run Log — After in the same format
-       [ ] What's Still Broken
-       [ ] At least four new commits
-       [ ] The SAME repository URL as last unit
+       [x] Run Log — Before, five criteria, five tries each
+       [x] Real output pasted underneath, naming file and function
+       [x] A verdict on every criterion
+       [x] A diagnosis for every miss, naming a place AND a mechanism
+       [x] Loop Trace, with the MCP call visible in it
+       [x] All three failure modes triggered and handled
+       [x] One improvement, with Run Log — After in the same format
+       [x] What's Still Broken
+       [x] At least four new commits
+       [x] The SAME repository URL as last unit
 
      Do not delete and recreate this repository. Your commit history is what
      shows your criteria existed before your results did.

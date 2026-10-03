@@ -303,8 +303,8 @@ def create_fit_card(outfit: str, new_item: dict) -> str:
         f"How they planned to wear it: {outfit}",
         f"Write a short caption for this outfit suggestion that they can post.",
         f"You have to mention the:",
-        f"-Price (written in digits, not spelled out in words): {new_item.get('price', 'N/A')}",
-        f"-Platform: {new_item.get('platform', 'N/A')}",
+        f"-Price (written in digits with $, not spelled out in words): {new_item.get('price', 'N/A')}",
+        f"-Platform (first letter capitalized like a title): {new_item.get('platform', 'N/A')}",
         f"Don't just list them and write them naturally in sentences.",
         f"It has to be like a post, not a product description."
     ])
